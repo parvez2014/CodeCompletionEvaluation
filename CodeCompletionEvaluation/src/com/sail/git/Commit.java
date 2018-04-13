@@ -5,11 +5,11 @@ public class Commit {
 	public String author;
 	public String date;
 	public String message;
-	public char sha[];
+	public String sha;
 
 
 
-	public Commit(String author, String date, String message, char[] sha) {
+	public Commit(String author, String date, String message, String sha) {
 		super();
 		this.author = author;
 		this.date = date;
@@ -45,14 +45,15 @@ public class Commit {
 		this.message = message;
 	}
 
-	public char[] getSha() {
+	
+	public String getSha() {
 		return sha;
 	}
 
-	public void setSha(char[] sha) {
+	public void setSha(String sha) {
 		this.sha = sha;
 	}
-	
+
 	public void print() {
 		System.out.println("Commit SHA: "+this.getSha());
 		System.out.println("Author: "+this.getAuthor());

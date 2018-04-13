@@ -1,6 +1,7 @@
 package com.sail.codeCompletionEvaluation.process;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -34,7 +35,7 @@ public class ProcessRunner {
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String commandList[] = {"cmd","/C","git -version"};
+		//String commandList[] = {"cmd","/C","git version"};
 		ProcessRunner runner = new ProcessRunner();
 		try {
 			runner.run();
@@ -48,7 +49,8 @@ public class ProcessRunner {
 	}
 	
 	public void run() throws IOException, InterruptedException{
-		ProcessBuilder pb = new ProcessBuilder("cmd","/C","git","-version");
+		ProcessBuilder pb = new ProcessBuilder("cmd","/C","git show 472aeb1861db7175e56e2594354d0ff0a25772d:FrameworkInfoCollector/FrameworkInfoLoader/src/frameworkinfoloader/Activator.java");
+		pb.directory(new File("D:\\Muhammad\\version_evaluation\\FrameworkInfoCollector"));
 		Process process = pb.start();
 		int errCode = process.waitFor();
 		System.out.println("Echo command executed, any errors? " + (errCode == 0 ? "No" : "Yes"));
