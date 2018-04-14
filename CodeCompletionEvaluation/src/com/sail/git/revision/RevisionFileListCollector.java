@@ -1,4 +1,4 @@
-package com.sail.git;
+package com.sail.git.revision;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,7 @@ public class RevisionFileListCollector {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
-			RevisionFileListCollector.getFileList("472aeb1861db7175e56e2594354d0ff0a25772da", "D:\\Muhammad\\version_evaluation\\FrameworkInfoCollector");
+			RevisionFileListCollector.getFileList("472aeb1861db7175e56e2594354d0ff0a25772da", "E:\\codeCompletionEvaluation\\FrameworkInfoCollector");
 		} catch (IOException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -27,12 +27,9 @@ public class RevisionFileListCollector {
 	public static ArrayList<String> getFileList(String SHA, String repositoryPath) throws IOException, InterruptedException {
 		ProcessBuilder pb = new ProcessBuilder("cmd","/C","git","ls-tree","-r","--name-only",SHA);
 		pb.directory(new File(repositoryPath));
-		Process process = pb.start();
-		int errCode = process.waitFor();
-		//System.out.println("Echo command executed, any errors? " + (errCode == 0 ? "No" : "Yes"));
-		
+		Process process = pb.start();		
 		String output = ProcessUtility.output(process.getInputStream());
-		
+		int errCode = process.waitFor();
 		return (parse(output));
 	
 	}

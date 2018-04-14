@@ -1,4 +1,4 @@
-package com.sail.git;
+package com.sail.git.commit;
 
 import java.io.File;
 import java.io.IOException;

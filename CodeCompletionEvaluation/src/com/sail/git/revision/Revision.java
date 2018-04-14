@@ -1,4 +1,4 @@
-package com.sail.git;
+package com.sail.git.revision;
 
 import java.util.ArrayList;
 

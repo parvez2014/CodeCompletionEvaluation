@@ -1,4 +1,4 @@
-package com.sail.git;
+package com.sail.git.revision;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +9,8 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 
 import com.sail.codeCompletionEvaluation.process.ProcessUtility;
+import com.sail.git.commit.Commit;
+import com.sail.git.commit.CommitManager;
 
 public class RevisionManager {
 
@@ -71,7 +73,7 @@ public class RevisionManager {
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		CommitManager commitManager = new CommitManager("D:\\Muhammad\\version_evaluation\\FrameworkInfoCollector");
+		CommitManager commitManager = new CommitManager("E:\\codeCompletionEvaluation\\FrameworkInfoCollector");
 		try {
 			commitManager.run();
 			RevisionManager revisionManager = new RevisionManager(commitManager);

@@ -1,4 +1,4 @@
-package com.sail.git;
+package com.sail.git.commit;
 
 public class Commit {
 
