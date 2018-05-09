@@ -4,47 +4,56 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 
 import com.sail.codeCompletionEvaluation.process.ProcessUtility;
 
+/* Example of a commit
+ * Commit SHA: 7d6a91f18f627042e5f436030e36ebe7bb747244
+ * Author: Parvez <mua237@mail.usask.ca>
+ * Date: Mon Apr 16 02:05:33 2018 -0400
+ * 
+ * Message: update diff between two revisions and collect the changed lines
+ * ...
+ * */
+
 public class CommitManager {
 
-	public ArrayList<Commit> commitList; //starts from index zero which is the most recent commit
-	public String repositoryPath;
+	private ArrayList<Commit> commitList; //starts from index zero which is the most recent commit
+	private String repositoryPath;
+	private HashMap<String,Integer> hmSHAtoCommitIndex;
 	
 	public CommitManager(String _repositoryPath) {
 		this.commitList = new ArrayList();
 		this.repositoryPath = _repositoryPath;
+		this.hmSHAtoCommitIndex = new HashMap();
 	}
 	public void add(Commit commit) {
 		this.commitList.add(commit);
+		this.hmSHAtoCommitIndex.put(commit.getSha(),commitList.size()-1);
 	}
 	public boolean hasCommitBySHA(String SHA) {
-		for(Commit commit:commitList) {
-				if(commit.getSha().equals(SHA)) {
-					return true;
-				}
-		}
-		return false;
+		if(hmSHAtoCommitIndex.containsKey(SHA))
+			return true;
+		else return false;
 	}
 	
 	//the goal of this function is to collect all commits and arrange them based on the time
 	public void run() throws InterruptedException, IOException {
-		ProcessBuilder pb = new ProcessBuilder("cmd","/C","git","log","master");
+		ProcessBuilder pb = new ProcessBuilder("git","log");
 		pb.directory(new File(this.getRepositoryPath()));
+		
 		Process process = pb.start();
 		int errCode = process.waitFor();
-		//System.out.println("Echo command executed, any errors? " + (errCode == 0 ? "No" : "Yes"));
-		
 		String output = ProcessUtility.output(process.getInputStream());
-		//System.out.println("Echo Error Outut:\n" + ProcessUtility.output(process.getErrorStream()));  
-		
+
 		this.parse(output);
 	}
 	
+	//commit messages are typically followed by space. We remove those spaces
 	private String listToString(List<String> lineList) {
 		StringBuilder sb = new StringBuilder("");
 		for(String line:lineList) {
@@ -79,7 +88,7 @@ public class CommitManager {
 					messageLines = new ArrayList();
 					for(;i<lineList.size();i++) {
 						line = lineList.get(i);
-						if(line.startsWith("commit ")) {
+						if(line.startsWith("commit ")) { //this indicates the start of another commit
 							i--;
 							break;
 						}else {
@@ -100,7 +109,7 @@ public class CommitManager {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		CommitManager commitManager = new CommitManager("D:\\Muhammad\\version_evaluation\\FrameworkInfoCollector");
+		CommitManager commitManager = new CommitManager("/home/parvez/research/repos/CodeCompletionEvaluation");
 		try {
 			commitManager.run();
 		} catch (InterruptedException | IOException e) {

@@ -43,7 +43,7 @@ public class RevisionDiff {
 		}
 	}
 	public void run(String oldSHA, String newSHA, String repositoryPath) throws IOException, InterruptedException {
-		ProcessBuilder pb = new ProcessBuilder("cmd","/C","git","diff","--no-color", oldSHA, newSHA);
+		ProcessBuilder pb = new ProcessBuilder("git","diff","--no-color", oldSHA, newSHA);
 		pb.directory(new File(repositoryPath));
 		Process process = pb.start();		
 		String output = ProcessUtility.output(process.getInputStream());

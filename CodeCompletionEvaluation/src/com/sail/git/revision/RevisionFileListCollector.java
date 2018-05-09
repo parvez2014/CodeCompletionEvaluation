@@ -18,14 +18,17 @@ public class RevisionFileListCollector {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
-			RevisionFileListCollector.getFileList("472aeb1861db7175e56e2594354d0ff0a25772da", "E:\\codeCompletionEvaluation\\FrameworkInfoCollector");
+			ArrayList<String> fileList = RevisionFileListCollector.getFileList("42cd79f0163a0de87c0dc02424b2d019c50e7759", "/home/parvez/research/repos/CodeCompletionEvaluation");
+			fileList.stream().forEach((String s)->{
+				System.out.println("File: "+s);
+			});
 		} catch (IOException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	public static ArrayList<String> getFileList(String SHA, String repositoryPath) throws IOException, InterruptedException {
-		ProcessBuilder pb = new ProcessBuilder("cmd","/C","git","ls-tree","-r","--name-only",SHA);
+		ProcessBuilder pb = new ProcessBuilder("git","ls-tree","-r","--name-only",SHA);
 		pb.directory(new File(repositoryPath));
 		Process process = pb.start();		
 		String output = ProcessUtility.output(process.getInputStream());
@@ -41,10 +44,6 @@ public class RevisionFileListCollector {
 			if(line.length()>0 && line.matches("\\s+")==false) {
 				fileList.add(line.trim());
 			}
-		}
-		
-		for(String input:fileList) {
-			System.out.println("File: "+input);
 		}
 		return fileList;
 	}

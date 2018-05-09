@@ -6,9 +6,7 @@ public class Commit {
 	public String date;
 	public String message;
 	public String sha;
-
-
-
+	
 	public Commit(String author, String date, String message, String sha) {
 		super();
 		this.author = author;

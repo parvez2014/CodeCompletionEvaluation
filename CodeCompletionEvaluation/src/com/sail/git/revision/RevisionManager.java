@@ -27,19 +27,17 @@ public class RevisionManager {
 			String currentCommitSHA = this.commitManager.getCommitList().get(commitIndex).getSha();
 			String previousCommitSHA = this.commitManager.getCommitList().get(commitIndex+1).getSha();
 			
-			ProcessBuilder pb = new ProcessBuilder("cmd","/C","git","diff","--name-status",currentCommitSHA,previousCommitSHA);
+			ProcessBuilder pb = new ProcessBuilder("git","diff","--name-status",currentCommitSHA,previousCommitSHA);
 			pb.directory(new File(commitManager.getRepositoryPath()));
 			Process process = pb.start();
 			int errCode = process.waitFor();
-			//System.out.println("Echo command executed, any errors? " + (errCode == 0 ? "No" : "Yes"));
-			
+
 			String output = ProcessUtility.output(process.getInputStream());
-			//System.out.println("Echo Error Output:\n" + ProcessUtility.output(process.getErrorStream()));  
 			
 			Revision revision = this.parse(output,commitIndex);
 			this.revisionList.add(revision);
 		}
-		//for the last commit all files have been added. So we need to determine list of all files in that particular reviiosn and include them in the added file list
+		//for the last commit all files have been added. So we need to determine list of all files in that particular revision and include them in the added file list
 		Commit firstCommit = (this.commitManager.getCommitList().get(this.commitManager.getCommitList().size()-1));
 		ArrayList<String> fileList = RevisionFileListCollector.getFileList(firstCommit.getSha(),commitManager.getRepositoryPath());
 		Revision revision = new Revision(fileList,null,null,(this.commitManager.getCommitList().size()-1));
@@ -73,7 +71,7 @@ public class RevisionManager {
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		CommitManager commitManager = new CommitManager("E:\\codeCompletionEvaluation\\FrameworkInfoCollector");
+		CommitManager commitManager = new CommitManager("/home/parvez/research/repos/CodeCompletionEvaluation");
 		try {
 			commitManager.run();
 			RevisionManager revisionManager = new RevisionManager(commitManager);
