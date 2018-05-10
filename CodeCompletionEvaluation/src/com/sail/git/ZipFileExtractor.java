@@ -8,7 +8,9 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 
 import com.sail.codeCompletionEvaluation.process.ProcessUtility;
+import com.sail.config.Config;
 
+//extract all zip files inside a given directory with the same name of the zip file
 public class ZipFileExtractor {
 
 	public static void run(File file) throws IOException, InterruptedException {
@@ -40,7 +42,7 @@ public class ZipFileExtractor {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
-			ZipFileExtractor.run(new File("/home/parvez/research/repos/CodeCompletionEvaluationRevisions"));
+			ZipFileExtractor.run(new File(Config.ARCHIVE_REPOSITORY_REVISION_PATH));
 		} catch (IOException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
