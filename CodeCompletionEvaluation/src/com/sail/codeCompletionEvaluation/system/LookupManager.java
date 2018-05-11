@@ -9,8 +9,10 @@ import com.github.javaparser.Position;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.symbolsolver.javaparsermodel.JavaParserFacade;
+import com.github.javaparser.symbolsolver.model.resolution.SymbolReference;
 import com.sail.config.Config;
 
 public class LookupManager extends VoidVisitorAdapter<Void>{
@@ -48,7 +50,10 @@ public class LookupManager extends VoidVisitorAdapter<Void>{
 			System.out.println("Method Name: "+m.getName().getIdentifier() +" Scope: "+m.getScope().get());
 			
 			try {
+			System.out.println("Expression expression: "+m);
 			ResolvedType resolvedType = JavaParserFacade.get(ProjectSymbolSolver.getInstance().getCombinedTypeSolver()).getType( m.getScope().get());
+			JavaParserFacade jpf = JavaParserFacade.get(ProjectSymbolSolver.getInstance().getCombinedTypeSolver());
+			SymbolReference<ResolvedMethodDeclaration> resolvedMethodDeclaration = jpf.solve(m);
 			if(resolvedType.isReferenceType())
 			System.out.println("Resolved Type: "+resolvedType.asReferenceType().getQualifiedName());
 			else {
